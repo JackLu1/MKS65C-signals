@@ -1,10 +1,16 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <signal.h>
 #include <unistd.h>
+#include <fcntl.h>
+#include <errno.h>
 
 static void stop(int signo){
-    printf("got signal SIGINT\n");
+    char * msg = "Program exited because of SIGINT\n";
+    printf("%s", msg);
+    int file = open("log.txt", O_WRONLY | O_APPEND);
+    write(file, msg, strlen(msg) );
     exit(0); 
 }
 static void parent(int signo){
